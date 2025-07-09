@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Comfortaa:wght@300..700&family=Jaro:opsz@6..72&family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body, html {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: 'Comfortaa', cursive;
+      overflow-x: hidden;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 30px;
+      height: 22px;
+      cursor: pointer;
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hamburger span {
+      display: block;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .menu {
+      position: fixed;
+      top: 60px;
+      left: 20px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+      padding: 1.25rem 1.5rem;
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 1000;
+      min-width: 160px;
+      user-select: none;
+      font-family: 'Lexend Deca', sans-serif;
+      text-align: left;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .menu.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .menu a {
+      color: #f6f6f6;
+      text-decoration: none;
+      font-weight: 300;
+      font-size: 1rem;
+      transition: color 0.3s ease, background-color 0.3s ease, padding-left 0.3s ease, border-left 0.3s ease;
+      display: inline-block;
+      padding: 6px 14px 6px 10px;
+      border-radius: 2px;
+      border-left: 4px solid transparent;
+    }
+    .menu a:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.12);
+      border-left-color: #f6f6f6;
+      padding-left: 14px;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* Intro Section */
+    .intro {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      gap: 10px;
+      text-align: center;
+      padding: 0 1rem;
+    }
+    .small-text {
+      font-size: 24px;
+      font-weight: 300;
+      color: #f6f6f6;
+      letter-spacing: 0.05em;
+      font-family: 'Comfortaa', cursive;
+    }
+    .big-name {
+      font-family: 'Jaro', serif;
+      font-weight: 400;
+      font-size: clamp(5rem, 16vw, 12rem);
+      color: white;
+      line-height: 1;
+    }
+
+    /* Section Styling */
+    section {
+      padding: 140px 20px 100px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
+    .section-title {
+      font-family: 'Jaro', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      color: #f6f6f6;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      transform: translateY(30px);
+      opacity: 0;
+      transition: all 1s ease;
+      text-align: center;
+    }
+    .section-content {
+      font-family: 'Lexend Deca', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: #e0e0e0;
+      line-height: 1.8;
+      padding: 0 10px;
+      transform: translateY(30px);
+      opacity: 0;
+      transition: all 1.2s ease;
+    }
+
+    section.in-view .section-title,
+    section.in-view .section-content {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Tech Stack Grid */
+    #tech-stack > div {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 30px;
+      justify-items: center;
+      align-items: center;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      #tech-stack > div {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .tech-icon {
+      width: 42px;
+      height: 42px;
+      filter: invert(94%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(100%) contrast(90%);
+      transition: all 0.3s ease;
+      user-select: none;
+      opacity: 0.85;
+    }
+
+    .tech-icon:hover {
+      filter: none;
+      transform: scale(1.1);
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .big-name {
+        font-size: clamp(3rem, 12vw, 8rem);
+      }
+      .small-text {
+        font-size: 18px;
+      }
+      .menu {
+        min-width: 140px;
+        padding: 1rem 1rem;
+        gap: 0.8rem;
+      }
+      .menu a {
+        font-size: 0.9rem;
+        padding: 5px 12px 5px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hamburger -->
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- Menu -->
+  <nav class="menu" id="menu">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#tech-stack">Tech Stack</a>
+    <a href="#certifications">Find Me At</a>
+    <a href="#contact">Contact Information</a>
+    <a href="your-resume-link.pdf" target="_blank">Resume</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="intro">
+    <div class="small-text">Hi I'm</div>
+    <div class="big-name">yochana preethi</div>
+  </div>
+
+  <!-- About Section -->
+  <section id="about">
+    <h2 class="section-title">About</h2>
+    <div class="section-content">
+      Turning data into meaningful stories is what drives me. With expertise in Python, SQL, and Power BI, I specialize in uncovering insights that empower smarter decisions. I’m dedicated to continuous learning and enjoy transforming complex datasets into clear, actionable analysis. My goal is to create impactful solutions that make a difference — one data point at a time.
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+ <section id="projects">
+  <h2 class="section-title">Projects</h2>
+  <div class="section-content">
+    <div class="project-item" tabindex="0">
+      <div class="project-title">Spotify Analytics Dashboard</div>
+      <div class="project-desc">Interactive dashboard analyzing Spotify user trends and playlists.</div>
+      <div class="tech-stack">Tech: Power BI, Python, Pandas</div>
+      <a href="https://github.com/yochanapreethi" target="_blank" class="view-github-btn">View on GitHub</a>
+    </div>
+    <div class="project-item" tabindex="0">
+      <div class="project-title">Netflix Content Dashboard</div>
+      <div class="project-desc">Data visualization of Netflix content trends and availability worldwide.</div>
+      <div class="tech-stack">Tech: Power BI, DAX, SQL</div>
+      <a href="https://github.com/yochanapreethi" target="_blank" class="view-github-btn">View on GitHub</a>
+    </div>
+    <div class="project-item" tabindex="0">
+      <div class="project-title">Sales Data Analytics</div>
+      <div class="project-desc">Sales performance analysis and forecasting for retail products.</div>
+      <div class="tech-stack">Tech: Python, Excel, Tableau</div>
+      <a href="https://github.com/yochanapreethi" target="_blank" class="view-github-btn">View on GitHub</a>
+    </div>
+    <div class="project-item" tabindex="0">
+      <div class="project-title">Customer Segmentation</div>
+      <div class="project-desc">K-means clustering to identify customer groups for targeted marketing.</div>
+      <div class="tech-stack">Tech: Python, scikit-learn, Matplotlib</div>
+      <a href="https://github.com/yochanapreethi" target="_blank" class="view-github-btn">View on GitHub</a>
+    </div>
+    <div class="project-item" tabindex="0">
+      <div class="project-title">Social Media Sentiment Analysis</div>
+      <div class="project-desc">Sentiment classification of tweets to gauge public opinion on brands.</div>
+      <div class="tech-stack">Tech: Python, NLTK, Twitter API</div>
+      <a href="https://github.com/yochanapreethi" target="_blank" class="view-github-btn">View on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  #projects {
+    color: #ddd;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  #projects h2 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 40px;
+  }
+  .section-content {
+    max-height: 540px; /* Show approx 3 projects */
+    overflow-y: auto;
+    padding-right: 12px;
+    position: relative;
+
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .section-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  
+  .section-content.scrolled-to-bottom::after {
+    opacity: 0;
+  }
+
+  .project-item {
+    border-left: 4px solid #444;
+    padding-left: 18px;
+    margin-bottom: 40px;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+  }
+  .project-item:hover {
+    border-color: #fff; /* white on hover */
+  }
+  .project-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #eee;
+  }
+  .project-desc {
+    font-size: 1rem;
+    color: #bbb;
+    margin-bottom: 6px;
+  }
+  .tech-stack {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  .view-github-btn {
+    display: inline-block;
+    background-color: transparent;
+    color: #666;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1.5px solid #666;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  /* On hovering the entire project, make button white */
+  .project-item:hover .view-github-btn {
+    color: #fff;
+    border-color: #fff;
+  }
+
+</style>
+
+<!-- Scroll Down Hint -->
+<div class="scroll-cue-container">
+  <p class="scroll-hint">scroll down for more</p>
+</div>
+
+<style>
+  .scroll-cue-container {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* horizontal center */
+    align-items: center;    /* vertical center */
+    height: 60px;           /* adjust height as needed */
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .scroll-hint {
+    font-family: 'Lexend Deca', sans-serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: #888;
+    letter-spacing: 0.5px;
+    text-align: center;
+    animation: float-text 2.5s ease-in-out infinite;
+  }
+
+  @keyframes float-text {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
+</style>
+
+
+<script>
+  const scrollContainer = document.querySelector('.section-content');
+  scrollContainer.addEventListener('scroll', () => {
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+    if (scrollTop + clientHeight >= scrollHeight - 1) {
+      scrollContainer.classList.add('scrolled-to-bottom');
+    } else {
+      scrollContainer.classList.remove('scrolled-to-bottom');
+    }
+  });
+</script>
+
+
+  <!-- Tech Stack Section -->
+  <section id="tech-stack">
+    <h2 class="section-title">Tech Stack</h2>
+    <div>
+      <img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" />
+      <img class="tech-icon" src="https://img.icons8.com/color/48/000000/power-bi.png" alt="Power BI" />
+      <img class="tech-icon" src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Excel" />
+      <img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" />
+      <img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" />
+      <img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" />
+      <img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" />
+      <img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" />
+      <img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" />
+      <img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" />
+      <img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" />
+      <img class="tech-icon" src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Adobe Illustrator" />
+    </div>
+  </section>
+
+  <!-- Certifications Section -->
+  <section id="certifications">
+    <h2 class="section-title">Find Me At</h2>
+  <div class="coding-profiles">
+
+  <style>
+    .coding-profiles {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+      font-family: 'Lexend Deca', sans-serif;
+      margin-top: 40px;
+    }
+
+    .coding-profiles a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(177, 177, 177, 0.05);
+      padding: 14px 14px;
+      border-radius: 0 8px 8px 0;
+      color: #f6f6f6;
+      text-decoration: none;
+      font-weight: 300;
+      font-size: 1rem;
+      border-left: 4px solid transparent;
+      transition:
+        color 0.3s ease,
+        background-color 0.3s ease,
+        padding-left 0.3s ease,
+        border-left 0.3s ease,
+        border-radius 0.3s ease;
+      user-select: none;
+      min-width: 240px;
+      position: relative;
+      overflow: visible;
+    }
+
+    .coding-profiles a:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.12);
+      border-left-color: #f6f6f6;
+      padding-left: 18px;
+      cursor: pointer;
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+
+    .coding-profiles img {
+      width: 28px;
+      filter: brightness(0.6) grayscale(1);
+      transition: filter 0.3s ease;
+    }
+
+    .coding-profiles a:hover img {
+      filter: brightness(1) grayscale(0);
+    }
+  </style>
+
+  <a href="https://auth.geeksforgeeks.org/user/yochanapreethi" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/GeeksforGeeks.svg" alt="GFG Logo">
+    GeeksforGeeks
+  </a>
+
+  <a href="https://www.codechef.com/users/yochanapreethi" target="_blank">
+    <img src="https://static.uacdn.net/thumbnail/external-app-icons/ce4fd2180646452aa0b03c3ffa3ef8e2.png" alt="CodeChef Logo" />
+  CodeChef
+</a>
+  </a>
+
+  <a href="https://leetcode.com/yochanapreethi" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png" alt="LeetCode Logo">
+    LeetCode
+  </a>
+
+  <a href="https://www.hackerrank.com/yochanapreethi" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/HackerRank_logo.png" alt="HackerRank Logo">
+    HackerRank
+  </a>
+
+  <a href="https://github.com/yochanapreethi" target="_blank">
+    <img src="https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_1280.png" alt="GitHub Logo" />
+    GitHub
+  </a>
+
+  <a href="https://medium.com/@yochanapreethi" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968906.png" alt="Medium Logo" />
+    Medium
+  </a>
+
+</div>
+
+
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2 class="section-title">Contact Information</h2>
+
+    <a href="https://linkedin.com/in/yochanapreethi" 
+     target="_blank" 
+     class="contact-link" 
+     title="LinkedIn Profile" 
+     style="display: inline-block; color: #bbb; font-size: 18px; text-decoration: none; cursor: pointer; position: relative; padding: 6px 0; margin: 0 auto 20px auto; transition: color 0.3s ease;">
+    <span style="display: inline-block; transition: transform 0.3s ease; border-bottom: 2px solid transparent;">
+      linkedin.com/in/yochanapreethi
+    </span>
+  </a>
+
+  <br/>
+
+    <a href="mailto:yochanapreethi2807@gmail.com" 
+     class="contact-link" 
+     title="Send Email" 
+     style="display: inline-block; color: #bbb; font-size: 18px; text-decoration: none; cursor: pointer; position: relative; padding: 6px 0; margin: 0 auto 20px auto; transition: color 0.3s ease;">
+    <span style="display: inline-block; transition: transform 0.3s ease; border-bottom: 2px solid transparent;">
+      yochanapreethi2807@gmail.com
+    </span>
+  </a>
+
+  <style>
+    #contact a.contact-link:hover {
+      color: #fff;
+    }
+    #contact a.contact-link:hover span {
+      transform: scale(1.1);
+      border-color: #fff;
+      transition: border-color 0.4s ease;
+    }
+  </style>
+
+  </section>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const menu = document.getElementById('menu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      menu.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        hamburger.classList.remove('active');
+        menu.classList.remove('active');
+      }
+    });
+
+    // Parallax scroll effect
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+  </script>
+</body>
+</html>
